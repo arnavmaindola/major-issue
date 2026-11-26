@@ -1,0 +1,13 @@
+tell me about : 
+The exact simulation parameters used in the version that generated your earlier graphs.
+The number of bits, frames and Monte Carlo iterations.
+The mathematical model used for each fading distribution.
+The OTFS modulation and demodulation equations implemented in MATLAB.
+The channel assumptions, including CSI and Doppler modelling.
+The actual BER plots and corresponding numerical results.
+
+also I noticed a thing that need attention.
+Your Rician channel normalisation needs correction.
+In channel_state.m, the Rician LOS component is added as:
+The LOS component does not appear to be scaled by the power of the first EVA tap. This conflicts with the stated intention that every fading model should preserve the EVA tap powers.
+This can make the Rician results unfairly optimistic or otherwise incomparable with the other fading models. The same issue appears in the common-random-number implementation. 
