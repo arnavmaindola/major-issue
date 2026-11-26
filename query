@@ -11,3 +11,20 @@ Your Rician channel normalisation needs correction.
 In channel_state.m, the Rician LOS component is added as:
 The LOS component does not appear to be scaled by the power of the first EVA tap. This conflicts with the stated intention that every fading model should preserve the EVA tap powers.
 This can make the Rician results unfairly optimistic or otherwise incomparable with the other fading models. The same issue appears in the common-random-number implementation. 
+ resp
+
+===============
+The Rician fix is in the code, but I haven't run it in MATLAB, so the Part B Rician numbers are still the old, inflated ones.
+
+Sync the updated files to MATLAB Drive, then run `clear functions; rehash` and:
+
+1. Set `M_GRID = 32; N_GRID = 16;` and run `sanity_test`. Expect 0 failures, and the new "Per-tap E|h_p|²" lines should PASS.
+2. In `main_partB_final`, set `quick = false`, `NUM_FRAMES = 500` and `stage = 'B1'`, then run it (about 3 min).
+3. Repeat with `stage = 'B2'`.
+4. Paste the `sanity_test` result, both tables and the paired-difference lines.
+
+Rician should now sit much closer to Rayleigh. It should still be somewhat better, since tap 1 carries about 24% of the power. Once your numbers arrive I'll have the PNGs regenerated.
+
+Rayleigh, Nakagami, alpha-mu and kappa-mu are unchanged and need no rerun. Part A is unaffected. The old M=64 Rician results came from the old model and are historical only.
+
+I haven't written up the fading-model formulas you asked about yet. I'll do that once the rerun numbers are in, unless you want it now.
