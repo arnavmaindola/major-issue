@@ -28,3 +28,16 @@ Rician should now sit much closer to Rayleigh. It should still be somewhat bette
 Rayleigh, Nakagami, alpha-mu and kappa-mu are unchanged and need no rerun. Part A is unaffected. The old M=64 Rician results came from the old model and are historical only.
 
 I haven't written up the fading-model formulas you asked about yet. I'll do that once the rerun numbers are in, unless you want it now.
+
+
+
+On your other points, here is the current setup:
+
+
+- **Parameters:** M=32, N=16, Δf=15 kHz, fc=4 GHz, QPSK with Gray mapping, EVA 9-tap, MMSE detection, perfect CSI.
+- **Bits per frame:** 1024.
+- **Frames:** Part A uses 1000 (1,024,000 bits per point). Part B uses 500 (512,000 bits per point).
+- **OTFS transmit:** tx = vec(X·F_Nᴴ), where X is the M×N delay-Doppler grid and F_N is the unitary N-point DFT. This is an ISFFT along the Doppler axis with an identity (rectangular) pulse.
+- **OTFS receive:** y_dd = FFT along the Doppler axis of the received signal, divided by √N, plus noise. The detector is x̂ = (HᴴH + σ²I)⁻¹Hᴴy, where H is the full MN×MN effective channel.
+- **Channel model:** each of the 9 taps has its own delay, a Jakes Doppler shift ν = ν_max·cos(2π·rand), and a fading gain. A frame-level cyclic prefix is assumed.
+- **Delay resolution:** at M=32 the 9 taps collapse onto 2 delay bins (0 and 1).
